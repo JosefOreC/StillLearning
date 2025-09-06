@@ -1,10 +1,11 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use PHPUnit\Framework\Attributes\PostCondition;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', HomeController::class);
 
 Route::match(['get','post'], '/contacto', function(){
     return "Hola desde la pagina de contacto get y post";
@@ -14,7 +15,21 @@ Route::get('/cursos/informacion', function(){
     return "Ingrese a este link para más informacion.";
 })->name('cur.info');
 
+/*Route::controller(PostController::class)->group(function(){
+    Route::get('posts', [PostController::class, 'index'])->name('posts.index');
 
+    Route::get('posts/create', [PostController::class, 'create'])->name('posts.create');
+
+    Route::post('posts', [PostController::class, 'store'])->name('posts.store');
+
+    Route::get('posts/{post}', [PostController::class, 'show'])->name('posts.show');
+
+    Route::get('posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
+
+    Route::put('posts/{post}', [PostController::class, 'update'])->name('posts.update');
+
+    Route::delete('posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
+});*/
 
 #Route::get('/cursos/{curso}', function($curso){
 #    return "Bienvenido al curso $curso";
@@ -38,35 +53,22 @@ Route::get('/cursos/{id}', function($id){
     return "Curso con id: $id";
 });
 
+Route::resource('articulos', PostController::class)->parameters(['articulos'=>'posts'])->names('posts');
 
-Route::prefix('posts')->group(function(){
+Route::prefix('posts')->name('posts.')->controller(PostController::class)->group(function(){
 
-    Route::get('/', function(){
-        return "Hola desde la pagina principal de posts";
-    });
+    /*Route::get('/', 'index')->name('posts.index');
 
-    Route::get('/create', function(){
-        return "Hola desde la pagina para crear posts";
-    });
+    Route::get('/create', 'create')->name('posts.create');
 
-    Route::post('/', function(){
-        return "Hola desde la pagina para guardar los posts";
-    });
+    Route::post('/', 'store')->name('posts.store');
 
-    Route::get('/{post}', function($post){
-        return "Aqui se mostrará el post: $post";
-    });
+    Route::get('/{post}', 'show')->name('posts.show');
 
-    Route::get('/{post}/edit', function($post){
-        return "Aqui estará el formulario para editar el post: $post";
-    });
+    Route::get('/{post}/edit', 'edit')->name('posts.edit');
 
-    Route::put('/{post}', function($post){
-        return "Aqui se mostrará el post: $post";
-    });
+    Route::put('/{post}', 'update')->name('posts.update');
 
-    Route::delete('/{post}', function ($post) {
-        return "Aqui se eliminará el post: $post";
-    });
+    Route::delete('/{post}', 'destroy')->name('posts.destroy');*/
 
 });
